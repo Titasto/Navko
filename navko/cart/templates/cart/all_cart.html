@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block cart %}
+<div class="cart">
+  {% if carts %}
+    {% for item in carts %}
+        <p>{{ item.product.name }}</p>
+        <p>{{ item.product.description }}</p>
+        <p>{{ item.product.brand }}</p>
+        <p>{{ item.product.series }}</p>
+    {% endfor %}
+  {% else %}
+    <h1>Doesn`t have any products yet</h1>
+  {% endif %}
+</div>
+
+{% endblock cart %}

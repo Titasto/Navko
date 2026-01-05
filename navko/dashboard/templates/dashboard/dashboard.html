@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Navko{% endblock title%}</title>
+</head>
+
+{% block dashboard %}
+<body>
+    <div class="dashboard_navigation">
+
+        {% if user.is_authenticated %}
+            <p><a href="{% url 'users:user_profile' %}"> {{ user.username }}</a></p>
+        <form method="post" action="{% url 'users:logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        {% elif not user.is_authenticated %}
+            <p><a href="{% url 'users:login' %}">Login</a></p>
+            <p>Registation</p>
+        {% endif %}
+
+        <p><a class="" href="{% url 'products:products' %}">Products</a></p>
+        <p><a class="" href="{% url 'cart:carts' %}">Cart</a></p>
+    </div>
+</body>
+{% endblock dashboard %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock title %}
+
+{% block products %}
+<div class="products">
+    {% for item in product  %}
+        <div class="product_item">
+            <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+            <p>{{ item.product_sensitive_info.price }}</p>
+            <p>{{ item.description }}</p>
+        </div>
+    --------------------
+    {% endfor %}
+</div>
+{% endblock products %}

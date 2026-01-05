@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Navko{% endblock title%}</title>
+    {% load static %}
+</head>
+
+<body>
+
+    <!-- Навигация -->
+    {% block dashboard %}
+    {% endblock dashboard %}
+
+    {% block auth %}
+    {% endblock auth %}
+
+    <!-- Контент страницы -->
+    {% block content %}
+    {% endblock content %}
+
+    <!-- Блок для страниц каталога -->
+    {% block products %}
+    {% endblock products %}
+
+    <!-- Блок для страницы товара -->
+    {% block product %}
+    {% endblock product %}
+
+    {% block cart %}
+    {% endblock cart %}
+</body>
