@@ -3,11 +3,13 @@ from django.contrib.auth.views import LogoutView, PasswordChangeView, PasswordCh
 from django.urls import path
 from . import views
 
+
 app_name = 'users'
 
 urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('registration/', views.UserRegistrationView.as_view(), name='registration'),
 
     path('user_profile', views.UpdateUserProfile.as_view(), name='user_profile'),
 

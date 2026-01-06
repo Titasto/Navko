@@ -2,9 +2,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
-from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, CreateView
 
-from users.forms import LoginUserForm, UserProfileForm
+from users.forms import LoginUserForm, UserProfileForm, UserRegistrationForm
 
 
 # Create your views here.
@@ -23,3 +24,10 @@ class UpdateUserProfile(UpdateView):
 
     def get_object(self, queryset = ...):
         return self.request.user
+
+
+class UserRegistrationView(CreateView):
+    model = get_user_model()
+    template_name = 'users/registration.html'
+    success_url = reverse_lazy('users:login')
+    form_class = UserRegistrationForm
