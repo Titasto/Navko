@@ -13,9 +13,10 @@ class LoginUserForm(AuthenticationForm):
         fields = ['username', 'password']
 
 class UserProfileForm(forms.ModelForm):
+    photo = forms.ImageField(required=False)
     username = forms.CharField(disabled=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.CharField(disabled=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-input'}))
-    photo = forms.ImageField()
+
 
     class Meta:
         model =get_user_model()

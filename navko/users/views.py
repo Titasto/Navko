@@ -17,10 +17,10 @@ class Login(LoginView):
 
 class UpdateUserProfile(UpdateView):
     model = get_user_model()
-    template_name = 'users/user_profile'
+    template_name = 'users/user_profile.html'
     form_class = UserProfileForm
     success_url = '/'
-    extra_context = {'title': 'Prodile'}
+    extra_context = {'title': 'Profile'}
 
     def get_object(self, queryset = ...):
         return self.request.user

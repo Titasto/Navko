@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block user_profile %}
+<form class="user_profile" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        {{ field.label }} {{ field }}{{ field.errors}}
+    {% endfor %}
+
+    <button type="submit">Save</button>
+</form>
+{% endblock user_profile %}
