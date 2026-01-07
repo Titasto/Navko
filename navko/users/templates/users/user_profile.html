@@ -9,6 +9,9 @@
         {{ field.label }} {{ field }}{{ field.errors}}
     {% endfor %}
 
+
     <button type="submit">Save</button>
 </form>
+
+<p><a href="{% url 'users:password_change' %}">Change password</a></p>
 {% endblock user_profile %}

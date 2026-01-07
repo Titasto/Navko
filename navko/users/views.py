@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
-from users.forms import LoginUserForm, UserProfileForm, UserRegistrationForm
+from users.forms import LoginUserForm, UserProfileForm, UserRegistrationForm, PasswordChange
 
 
 # Create your views here.
@@ -31,3 +31,9 @@ class UserRegistrationView(CreateView):
     template_name = 'users/registration.html'
     success_url = reverse_lazy('users:login')
     form_class = UserRegistrationForm
+
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'users/password_change_form.html'
+    success_url = reverse_lazy('users:user_profile')
+    form_class = PasswordChange
