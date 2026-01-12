@@ -10,6 +10,14 @@
             <p>{{ item.product_sensitive_info.price }}</p>
             <p>{{ item.description }}</p>
         </div>
+
+    <div>
+        <form method="post" action="{% url 'products:add_to_cart' item.id %}">
+            {% csrf_token %}
+            <!--Change to icon-->
+            <button type="submit">Add_To_Cart</button>
+        </form>
+    </div>
     --------------------
     {% endfor %}
 </div>
