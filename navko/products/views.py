@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, ListView, TemplateView
@@ -49,3 +51,5 @@ def add_cart_button(request, productid):
         })
 
     return JsonResponse({'success': False}, status=400)
+
+

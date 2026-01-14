@@ -12,13 +12,40 @@
         </div>
 
     <div>
-        <form method="post" action="{% url 'products:add_to_cart' item.id %}">
-            {% csrf_token %}
-            <!--Change to icon-->
-            <button type="submit">Add_To_Cart</button>
-        </form>
+        <button
+            class="add-to-cart-btn"
+            data-product-id="{{ item.id }}"
+            data-csrf="{{ csrf_token }}">
+            Add to cart
+        </button>
     </div>
     --------------------
     {% endfor %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+            const csrfToken = this.dataset.csrf;
+
+            fetch(`/products/add_to_cart/${productId}`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    btn.textContent = `Added (${data.count})`;
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock products %}
