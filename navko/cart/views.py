@@ -42,9 +42,8 @@ def controller_cart_action(request, productid):
                 print('-')
                 cart_item.save()
             case 'delete':
-                cart_item.count = 0
-                print('&')
-                cart_item.save()
+                CartItem.objects.filter(id=cart_item.id).delete()
+
 
         return JsonResponse({
             'success': True,

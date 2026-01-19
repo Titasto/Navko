@@ -1,10 +1,11 @@
 import json
-
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import DetailView, ListView, TemplateView
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views.generic import DetailView, ListView
 from .models import Product
 from cart.models import Cart, CartItem
+from .models import PurposeCat
 
 
 # Create your views here.
@@ -27,7 +28,7 @@ class ProductPage(DetailView):
 class AllProducts(ListView):
     template_name = 'products/products.html'
     model = Product
-    context_object_name = 'product'
+    context_object_name = 'products'
 
 
 def add_cart_button(request, productid):
@@ -51,5 +52,22 @@ def add_cart_button(request, productid):
         })
 
     return JsonResponse({'success': False}, status=400)
+
+#Add function to check self.category exist
+class CatView(ListView):
+    template_name = 'products/products.html'
+    model = Product
+    context_object_name = 'products'
+
+
+    def get_queryset(self):
+        self.category = get_object_or_404(PurposeCat, slug=self.kwargs['cat_slug'])
+        return self.category.products.all().distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.category.name
+        context['cat_active'] = self.category
+        return context
 
 
