@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load cat_tags %}
 
-{% block title %}Products{% endblock title %}
+
+{% block title %}{{ title }}{% endblock title %}
 
 {% block products %}
 <div class="products">
-    {% for item in product  %}
+    {% for item in products  %}
         <div class="product_item">
             <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
             <p>{{ item.product_sensitive_info.price }}</p>
@@ -13,4 +15,36 @@
     --------------------
     {% endfor %}
 </div>
+
+<aside class="sidebar">
+    {% cats_menu active_category %}
+  </aside>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+            const csrfToken = this.dataset.csrf;
+
+            fetch(`/products/add_to_cart/${productId}`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    btn.textContent = `Added (${data.count})`;
+                }
+            });
+        });
+    });
+});
+</script>
+
 {% endblock products %}
