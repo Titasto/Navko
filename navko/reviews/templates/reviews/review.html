@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <p>{{ user.username }}</p>
+    <p>{{ form.text }}<p>
+
+    <button type="submit">Publish</button>
+</form>
+
+{% for item in reviews %}
+    <p>{{item.user_id.username}}</p>
+    <p>{{item.rating}}</p>
+    <p>{{item.text}}</p>
+{% endfor %}
