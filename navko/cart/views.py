@@ -1,5 +1,3 @@
-import json
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -8,7 +6,9 @@ from django.views.generic import ListView
 
 from products.models import Product
 from .models import Cart, CartItem
+import json
 
+from django.http import JsonResponse
 
 # Create your views here.
 class CartProduct(ListView):
@@ -42,12 +42,12 @@ def controller_cart_action(request, productid):
                 print('-')
                 cart_item.save()
             case 'delete':
-                CartItem.objects.filter(id=cart_item.id).delete()
-
+                cart_item.count = 0
+                print('&')
+                cart_item.save()
 
         return JsonResponse({
             'success': True,
             'count': cart_item.count
         })
     return JsonResponse({'success': False}, status=400)
-

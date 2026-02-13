@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
-{% load cat_tags %}
 
-
-{% block title %}{{ title }}{% endblock title %}
+{% block title %}Products{% endblock title %}
 
 {% block products %}
 <div class="products">
-    {% for item in products  %}
+    {% for item in product  %}
         <div class="product_item">
             <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
             <p>{{ item.product_sensitive_info.price }}</p>
             <p>{{ item.description }}</p>
         </div>
+
+    <div>
+        <button
+            class="add-to-cart-btn"
+            data-product-id="{{ item.id }}"
+            data-csrf="{{ csrf_token }}">
+            Add to cart
+        </button>
+    </div>
     --------------------
     {% endfor %}
 </div>
-
-<aside class="sidebar">
-    {% cats_menu active_category %}
-  </aside>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,5 +48,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
-
 {% endblock products %}

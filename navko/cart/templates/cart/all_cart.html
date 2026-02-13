@@ -4,16 +4,102 @@
 
 {% block cart %}
 <div class="cart">
-  {% if carts %}
+
+{% if carts %}
     {% for item in carts %}
-        <p>{{ item.product.name }}</p>
+    <div class="cart-item" data-product-id="{{ item.product.id }}">
+
+        <p><strong>{{ item.product.name }}</strong></p>
         <p>{{ item.product.description }}</p>
-        <p>{{ item.product.brand }}</p>
-        <p>{{ item.product.series }}</p>
+        <p>{{ item.product.brand }} / {{ item.product.series }}</p>
+
+        <p>
+            Count:
+            <span
+                class="cart-item-count"
+                data-product-id="{{ item.product.id }}"
+            >
+                {{ item.count }}
+            </span>
+        </p>
+
+        <p>
+            <button
+                data-action="increase"
+                data-product-id="{{ item.product.id }}"
+                data-csrf="{{ csrf_token }}"
+            >+</button>
+
+            <button
+                data-action="downgrade"
+                data-product-id="{{ item.product.id }}"
+                data-csrf="{{ csrf_token }}"
+            >-</button>
+
+            <button
+                data-action="delete"
+                data-product-id="{{ item.product.id }}"
+                data-csrf="{{ csrf_token }}"
+            >Delete</button>
+        </p>
+
+        <hr>
+    </div>
     {% endfor %}
-  {% else %}
-    <h1>Doesn`t have any products yet</h1>
-  {% endif %}
+{% else %}
+    <h2>Doesn't have any products yet</h2>
+{% endif %}
+
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', function () {
+
+            const productId = this.dataset.productId;
+            const action = this.dataset.action;
+            const csrfToken = this.dataset.csrf;
+
+            fetch(`/cart/cart/action/${productId}/`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: action
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                if (!data.success) return;
+
+                const countEl = document.querySelector(
+                    `.cart-item-count[data-product-id="${productId}"]`
+                );
+
+                if (countEl) {
+                    countEl.textContent = data.count;
+                }
+
+                if (data.count === 0) {
+                    const itemEl = document.querySelector(
+                        `.cart-item[data-product-id="${productId}"]`
+                    );
+                    if (itemEl) {
+                        itemEl.remove();
+                    }
+                }
+            });
+        });
+    });
+
+});
+</script>
 
 {% endblock cart %}
